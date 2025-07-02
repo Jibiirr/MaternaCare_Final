@@ -25,7 +25,7 @@
     <VBox spacing="10" VBox.vgrow="ALWAYS" fillWidth="true">
         <HBox spacing="10" alignment="CENTER_RIGHT">
             <TextField fx:id="searchField" promptText="Search in records..." HBox.hgrow="ALWAYS"/>
-            <Button text="Refresh" onAction="#handleRefresh" styleClass="search-button"/>
+            <Button text="Clear" onAction="#handleRefresh" styleClass="search-button"/>
         </HBox>
         
         <TableView fx:id="recordsTable" styleClass="table-view" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS" 

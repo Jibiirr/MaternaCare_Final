@@ -87,8 +87,6 @@
         <HBox spacing="10" alignment="CENTER_LEFT">
             <Text styleClass="section-title" text="High-Risk Patient Records"/>
             <Region HBox.hgrow="ALWAYS"/>
-            <TextField fx:id="searchField" promptText="Search records..." HBox.hgrow="NEVER"/>
-            <Button text="Refresh" onAction="#handleRefresh" styleClass="search-button"/>
         </HBox>
         
         <TableView fx:id="recordsTable" VBox.vgrow="ALWAYS" styleClass="table-view" prefHeight="350.0" maxHeight="Infinity" minHeight="300">

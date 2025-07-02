@@ -60,8 +60,6 @@ public class DashboardController {
     @FXML
     private TableColumn<PatientData, Double> ageOfGestationColumn;
     @FXML
-    private TextField searchField;
-    @FXML
     private Label totalPatientsLabel;
     @FXML
     private Label completedFormsLabel;
@@ -85,7 +83,6 @@ public class DashboardController {
     @FXML
     public void initialize() {
         setupTableColumns();
-        setupTableSearch();
         setupIcons();
         loadMaternalRecords();
         updateCharts();
@@ -171,45 +168,6 @@ public class DashboardController {
         recordsTable.setFixedCellSize(40);
     }
 
-    private void setupTableSearch() {
-        filteredData = new FilteredList<>(patientData, p -> true);
-
-        searchField.textProperty().addListener((observable, oldValue, newValue) -> {
-            filteredData.setPredicate(patient -> {
-                // Only include patients aged 10-17 in the table
-                int age = patient.getAge();
-                if (age < 10 || age > 17) {
-                    return false;
-                }
-                if (newValue == null || newValue.isEmpty()) {
-                    return true;
-                }
-
-                String lowerCaseFilter = newValue.toLowerCase();
-
-                return patient.getPatientId().toLowerCase().contains(lowerCaseFilter) ||
-                        patient.getName().toLowerCase().contains(lowerCaseFilter) ||
-                        String.valueOf(patient.getAge()).contains(lowerCaseFilter) ||
-                        String.valueOf(patient.getAgeOfGestation()).contains(lowerCaseFilter) ||
-                        patient.getPurok().toLowerCase().contains(lowerCaseFilter) ||
-                        patient.getContactNumber().toLowerCase().contains(lowerCaseFilter) ||
-                        patient.getEmail().toLowerCase().contains(lowerCaseFilter);
-            });
-        });
-
-        SortedList<PatientData> sortedData = new SortedList<>(filteredData);
-        sortedData.comparatorProperty().bind(recordsTable.comparatorProperty());
-        recordsTable.setItems(sortedData);
-    }
-
-    @FXML
-    private void handleRefresh() {
-        searchField.clear();
-        loadMaternalRecords();
-        updateCharts();
-        updateStatCards();
-    }
-
     private void loadMaternalRecords() {
         patientData.clear();
         try {
@@ -242,6 +200,7 @@ public class DashboardController {
                     }
                 }
             }
+            recordsTable.setItems(patientData);
         } catch (SQLException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Database Error", "Failed to load maternal records: " + e.getMessage());
